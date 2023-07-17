@@ -14,8 +14,10 @@ jsonify = "*"
 sqlalchemy-serializer = "*"
 flask-restful = "*"
 flask-cors = "*"
+flask-bcrypt = "1.0.1"
 
 [dev-packages]
 
 [requires]
 python_version = "3.8"
+
