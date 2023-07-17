@@ -144,3 +144,5 @@ class Meetups(Resource):
 api.add_resource(Meetups, "/meetups")
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
+
+#test
