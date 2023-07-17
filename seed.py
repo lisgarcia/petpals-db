@@ -5,7 +5,4 @@ from models import db, Pet, User
 # with app.app_context():
 # Info on application context: https://flask.palletsprojects.com/en/1.1.x/appcontext/
 with app.app_context():
-    print("Deleting existing owners...")
-    User.query.delete()
-
     db.session.commit()
