@@ -5,8 +5,6 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask_bcrypt import Bcrypt
 import os
-from werkzeug.utils import secure_filename
-
 
 # Initialize our db
 db = SQLAlchemy()
@@ -54,5 +52,16 @@ class Meetup(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    pet_id = db.Column(db.Integer, db.ForeignKey("pets.id"))
+
+    venue = db.Column(db.String)
+    street_address = db.Column(db.String)
+    city = db.Column(db.String)
+    state = db.Column(db.String)
+    country = db.Column(db.String)
+
+    longtitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+
 
 # small change
