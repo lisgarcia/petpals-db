@@ -4,6 +4,8 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask_bcrypt import Bcrypt
+import os
+from werkzeug.utils import secure_filename
 
 
 # Initialize our db
@@ -26,6 +28,7 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String)
+    email = db.Column(db.String)
     profile_pic = db.Column(db.String)
 
     meetups = db.relationship("Meetup", backref="user")
