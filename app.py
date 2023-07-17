@@ -5,9 +5,11 @@ from werkzeug.exceptions import NotFound
 from models import db, Pet, User, Meetup
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
+from geopy.geocoders import Nominatim
 
 app = Flask(__name__)
 CORS(app)
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///petpals.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -15,6 +17,8 @@ app.json.compact = False  # configures JSON responses to print on indented lines
 app.secret_key = (
     b"\xda\xac|D\xb4\xed\t\xffK\xd1\xbe\x1dg\xf4\x16\xc1j\xb3\x95N+\xf8x\x9e"
 )
+
+geolocator = Nominatim(user_agent="petpals")
 
 migrate = Migrate(app, db)
 db.init_app(app)
@@ -99,5 +103,44 @@ class CheckSession(Resource):
 
 
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
+
+
+class Meetups(Resource):
+    def post(self):
+        request_json = request.get_json()
+
+        street_address = request_json["street_address"]
+        city = request_json["city"]
+        state = request_json["state"]
+        country = request_json["country"]
+
+        address = f"{street_address}, {city}, {state}, {country}"
+
+        geolocator = Nominatim(user_agent="your_app_name")
+        location = geolocator.geocode(address)
+
+        if location is None:
+            return {"error": "Invalid address."}, 400
+
+        longitude = location.longitude
+        latitude = location.latitude
+
+        meetup = Meetup(
+            user_id=session["user_id"],
+            pet_id=request_json["pet_id"],
+            venue=request_json["venue"],
+            street_address=street_address,
+            city=city,
+            state=state,
+            country=country,
+            longitude=longitude,
+            latitude=latitude,
+        )
+        db.session.add(meetup)
+        db.session.commit()
+        return {"message": "Meetup created successfully."}, 201
+
+
+api.add_resource(Meetups, "/meetups")
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
