@@ -6,13 +6,6 @@ from models import db, Pet, User, Meetup
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 
-import os
-
-# Remove the existing SQLite database file
-db_path = os.path.join(os.path.dirname(__file__), "petpals.db")
-if os.path.exists(db_path):
-    os.remove(db_path)
-
 app = Flask(__name__)
 CORS(app)
 
@@ -47,8 +40,9 @@ class Signup(Resource):
         username = request_json["username"]
         password = request_json["password"]
         profile_pic = request_json["profile_pic"]
+        email = request_json["email"]
 
-        new_user = User(username=username, profile_pic=profile_pic)
+        new_user = User(username=username, profile_pic=profile_pic, email=email)
         new_user.password_hash = password
         try:
             db.session.add(new_user)
