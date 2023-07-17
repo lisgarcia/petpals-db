@@ -1,5 +1,5 @@
 from app import app
-from models import db, Pet, Owner
+from models import db, Pet, User
 
 # Create application context
 # with app.app_context():
@@ -8,4 +8,6 @@ with app.app_context():
     print("Deleting existing pets...")
     Pet.query.delete()
     print("Deleting existing owners...")
-    Owner.query.delete()
+    User.query.delete()
+
+    db.session.commit()
