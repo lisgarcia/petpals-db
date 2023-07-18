@@ -6,7 +6,7 @@ from models import db, Pet, User, Meetup
 # Info on application context: https://flask.palletsprojects.com/en/1.1.x/appcontext/
 with app.app_context():
     pet = Pet(
-        owner_id=2,
+        owner_id=14,
         name="Ben",
         birth_year="2020",
         species="dog",
