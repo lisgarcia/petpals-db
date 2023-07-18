@@ -142,6 +142,38 @@ class Meetups(Resource):
 
 
 api.add_resource(Meetups, "/meetups")
+
+class Pets(Resource):
+    
+    def get(self):
+        pets = [pet.to_dict(rules=("-meetups",)) for pet in Pet.query.all()]
+
+        return make_response(pets, 200)
+    
+    def post(self):
+        request_json = request.get_json()
+
+        pet = Pet(
+            owner_id=session["owner_id"],
+            name=request_json["name"],
+            birth_year=request_json["birth_year"],
+            species=request_json["species"],
+            breed=request_json["breed"],
+            profile_pic=request_json["profile_pic"],
+            city=request_json["city"],
+            state=request_json["state"],
+            country=request_json["country"],
+            availability=request_json["availability"],
+        )
+        db.session.add(pet)
+        db.session.commit()
+        return make_response(
+            pet.to_dict(rules=("-meetups",)),
+            201
+        )
+    
+api.add_resource(Pets, "/pets")
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
 
