@@ -147,7 +147,6 @@ class Meetups(Resource):
     
 api.add_resource(Meetups, '/meetups')
 
-
 class MeetupsById(Resource):
     def get(self, id):
         meetup = Meetup.query.filter(Meetup.id == id).first()
@@ -223,6 +222,45 @@ class Pets(Resource):
         )
     
 api.add_resource(Pets, "/pets")
+
+class PetById(Resource):
+    def get(self, id):
+        pet = Pet.query.filter(Pet.id == id).first()
+
+        if pet:
+            return make_response(pet.to_dict(), 200)
+        else:
+            return make_response({'error': 'Pet not found'}, 404)
+        
+    def patch(self, id):
+        pet = Pet.query.filter(Pet.id == id).first()
+
+        if pet:
+            request_json = request.get_json()
+            
+            for key in request_json:
+                setattr(pet, key, request_json[key])
+
+            db.session.add(pet)
+            db.session.commit()
+
+            return make_response(pet.to_dict(), 202)
+        else:
+            return make_response({'error': 'Pet not found'}, 404)
+    
+    def delete(self, id):
+        pet = Pet.query.filter(Pet.id == id).first()
+
+        if pet:
+            db.session.delete(pet)
+            db.session.commit()
+
+            return make_response({}, 204)
+        else:
+            return make_response({'error': 'Pet not found'}, 404)
+
+api.add_resource(PetById, '/pets/<int:id>')
+
 
 class Users(Resource):
     def get(self):
