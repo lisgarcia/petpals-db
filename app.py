@@ -165,6 +165,33 @@ class MeetupsById(Resource):
         else:
             return make_response({'error':'Meetup not found'}, 404)
         
+    def patch(self, id):
+        meetup = Meetup.query.filter(Meetup.id == id).first()
+
+        if meetup:
+            data = request.get_json()
+            setattr(meetup, 'venue', data['venue'])
+            setattr(meetup, 'street_address', data['street_address'])
+            setattr(meetup, 'city', data['city'])
+            setattr(meetup, 'state', data['state'])
+            setattr(meetup, 'country', data['country'])
+            setattr(meetup, 'date', data['date'])
+            setattr(meetup, 'time', data['time'])
+            #not sure if lat/long will be needed
+            # setattr(meetup, 'longitude', data['longitude'])
+            # setattr(meetup, 'latitude', data['latitude'])
+            db.session.add(meetup)
+            db.session.commit()
+
+            return make_response(meetup.to_dict(), 202)
+        
+        else:
+            return make_response({'error': 'Meetup not found'}, 404)
+
+
+
+
+        
 api.add_resource(MeetupsById, '/meetups/<int:id>')
 
 class Pets(Resource):
