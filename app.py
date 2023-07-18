@@ -144,8 +144,9 @@ class Meetups(Resource):
         meetups = [meetup.to_dict() for meetup in Meetup.query.all()]
 
         return make_response(meetups, 200)
-
+    
 api.add_resource(Meetups, "/meetups")
+
 
 class MeetupsById(Resource):
     def get(self, id):
@@ -177,9 +178,7 @@ class MeetupsById(Resource):
             setattr(meetup, 'country', data['country'])
             setattr(meetup, 'date', data['date'])
             setattr(meetup, 'time', data['time'])
-            #not sure if lat/long will be needed
-            # setattr(meetup, 'longitude', data['longitude'])
-            # setattr(meetup, 'latitude', data['latitude'])
+
             db.session.add(meetup)
             db.session.commit()
 
@@ -188,11 +187,8 @@ class MeetupsById(Resource):
         else:
             return make_response({'error': 'Meetup not found'}, 404)
 
-
-
-
-        
 api.add_resource(MeetupsById, '/meetups/<int:id>')
+
 
 class Pets(Resource):
     
@@ -227,5 +223,3 @@ api.add_resource(Pets, "/pets")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
-
-#test
