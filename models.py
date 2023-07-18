@@ -81,3 +81,6 @@ class Meetup(db.Model, SerializerMixin):
 
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
+
+    date = db.Column(db.String)
+    time = db.Column(db.String)

@@ -5,19 +5,19 @@ from models import db, Pet, User, Meetup
 # with app.app_context():
 # Info on application context: https://flask.palletsprojects.com/en/1.1.x/appcontext/
 with app.app_context():
-    pet = Pet()
-    db.session.add(pet)
-    db.session.commit()
-
-    meetup = Meetup(
-        user_id=1,
-        pet_id=1,
-        venue="my home",
-        street_address="43212 Center St",
-        city="Chantilly",
-        state="Virginia",
-        country="US",
+    pet = Pet(
+        owner_id=2,
+        name="Ben",
+        birth_year="2020",
+        species="dog",
+        breed="husky",
+        profile_pic="https://images.wagwalkingweb.com/media/daily_wag/blog_articles/hero/1685787498.877709/fun-facts-about-siberian-huskies-1.png",
+        city="chantilly",
+        state="virginia",
+        country="united states",
+        availability="Weekend",
+        longitude=2,
+        latitude=2,
     )
-
-    db.session.add(meetup)
+    db.session.add(pet)
     db.session.commit()
