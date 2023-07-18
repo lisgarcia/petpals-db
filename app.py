@@ -145,15 +145,18 @@ class Meetups(Resource):
 
         return make_response(meetups, 200)
     
-api.add_resource(Meetups, "/meetups")
+api.add_resource(Meetups, '/meetups')
 
 
 class MeetupsById(Resource):
     def get(self, id):
-        meetups = Meetup.query.filter(Meetup.id == id).first()
+        meetup = Meetup.query.filter(Meetup.id == id).first()
 
-        return make_response(meetups, 200)
-    
+        if meetup:
+            return make_response(meetup.to_dict(), 200)
+        else:
+            return make_response({'error':'Meetup not found'}, 404)
+
     def delete(self, id):
         meetup = Meetup.query.filter(Meetup.id == id).first()
 
@@ -220,6 +223,55 @@ class Pets(Resource):
         )
     
 api.add_resource(Pets, "/pets")
+
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+
+        return make_response(users, 200)
+
+api.add_resource(Users, '/users')
+
+class UserById(Resource):
+    def get(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            return make_response(user.to_dict(), 200)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+    
+    def delete(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+
+            return make_response({}, 204)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+        
+    def patch(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            data = request.get_json()
+            setattr(user, 'username', data['username'])
+            #setattr(user, '_password_hash', data['_password_hash'])
+            setattr(user, 'profile_pic', data['profile_pic'])
+            setattr(user, 'email', data['email'])
+            
+
+            db.session.add(user)
+            db.session.commit()
+
+            return make_response(user.to_dict(), 202)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+
+api.add_resource(UserById, '/users/<int:id>')
+
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
