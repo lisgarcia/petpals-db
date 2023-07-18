@@ -139,9 +139,33 @@ class Meetups(Resource):
         db.session.add(meetup)
         db.session.commit()
         return {"message": "Meetup created successfully."}, 201
+    
+    def get(self):
+        meetups = [meetup.to_dict() for meetup in Meetup.query.all()]
 
+        return make_response(meetups, 200)
 
 api.add_resource(Meetups, "/meetups")
+
+class MeetupsById(Resource):
+    def get(self, id):
+        meetups = Meetup.query.filter(Meetup.id == id).first()
+
+        return make_response(meetups, 200)
+    
+    def delete(self, id):
+        meetup = Meetup.query.filter(Meetup.id == id).first()
+
+        if meetup:
+            db.session.delete(meetup)
+            db.session.commit()
+            
+            return make_response({}, 204)
+        
+        else:
+            return make_response({'error':'Meetup not found'}, 404)
+        
+api.add_resource(MeetupsById, '/meetups/<int:id>')
 
 class Pets(Resource):
     
