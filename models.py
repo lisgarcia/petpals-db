@@ -80,19 +80,19 @@ class Meetup(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     pet_id = db.Column(db.Integer, db.ForeignKey("pets.id"))
 
+    title = db.Column(db.String)
+    details = db.Column(db.String)
+
     venue = db.Column(db.String)
     street_address = db.Column(db.String)
     city = db.Column(db.String)
     state = db.Column(db.String)
     country = db.Column(db.String)
 
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
+    longitude = db.Column(db.String)
+    latitude = db.Column(db.String)
 
     date = db.Column(db.String)
     time = db.Column(db.String)
 
-    serialize_rules = (
-        "-user.meetups",
-        "-pet.meetups",
-    )
+    image = db.Column(db.String)
