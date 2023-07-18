@@ -15,7 +15,7 @@ bcrypt = Bcrypt()
 class Pet(db.Model, SerializerMixin):
     __tablename__ = "pets"
 
-    serialize_rules = ("-meetups.pet",)
+    serialize_rules = ("-user.pet", "-user.pets", "-user.meetups")
 
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -38,7 +38,12 @@ class Pet(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
-    serialize_rules = ("-meetups.user", "-_password_hash", "-pets.user")
+    serialize_rules = (
+        "-meetups.user",
+        "-_password_hash",
+        "-pets.user",
+        "-pets.meetups",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -86,3 +91,8 @@ class Meetup(db.Model, SerializerMixin):
 
     date = db.Column(db.String)
     time = db.Column(db.String)
+
+    serialize_rules = (
+        "-user.meetups",
+        "-pet.meetups",
+    )

@@ -66,13 +66,13 @@ class Login(Resource):
     def post(self):
         request_json = request.get_json()
         username = request_json["username"]
-        user = User.query.filter(User.username == username).first()
-        password = request_json["password"]
-
-        if user:
-            if user.authenticate(password):
-                session["user_id"] = user.id
-                return user.to_dict(), 200
+        # user = User.query.filter(User.username == username).first()
+        # password = request_json["password"]
+        # print(user)
+        # if user:
+        #     if user.authenticate(password):
+        #         session["user_id"] = user.id
+        #         return user.to_dict(), 200
 
         return {"error": "Invalid username or password"}, 401
 
@@ -106,6 +106,11 @@ api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 
 
 class Meetups(Resource):
+    def get(self):
+        meetups = [meetup.to_dict() for meetup in Meetup.query.all()]
+
+        return make_response(meetups, 200)
+
     def post(self):
         request_json = request.get_json()
 
@@ -113,14 +118,20 @@ class Meetups(Resource):
         city = request_json["city"]
         state = request_json["state"]
         country = request_json["country"]
+        date = request_json["date"]
+        time = request_json["time"]
 
-        address = f"{street_address}, {city}, {state}, {country}"
+        address = f"{city}, {state}, {country}"
 
-        geolocator = Nominatim(user_agent="your_app_name")
+        geolocator = Nominatim(user_agent="petpals")
         location = geolocator.geocode(address)
 
         if location is None:
-            return {"error": "Invalid address."}, 400
+            return {
+                "error": "Invalid address.",
+                "address": address,
+                "location": None,
+            }, 400
 
         longitude = location.longitude
         latitude = location.latitude
@@ -135,10 +146,35 @@ class Meetups(Resource):
             country=country,
             longitude=longitude,
             latitude=latitude,
+            date=date,
+            time=time,
         )
         db.session.add(meetup)
         db.session.commit()
-        return {"message": "Meetup created successfully."}, 201
+
+        return make_response({"message": "Meetup created successfully."}, 201)
+
+api.add_resource(Meetups, "/meetups")
+
+
+class Pets(Resource):
+    def get(self):
+        pets = [pet.to_dict() for pet in Pet.query.all()]
+        return make_response(pets, 200)
+
+
+api.add_resource(Pets, "/pets")
+
+
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+        return make_response(users, 200)
+
+
+api.add_resource(Users, "/users")
+
+
     
     def get(self):
         meetups = [meetup.to_dict() for meetup in Meetup.query.all()]
@@ -275,3 +311,4 @@ api.add_resource(UserById, '/users/<int:id>')
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
+
