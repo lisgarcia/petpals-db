@@ -157,33 +157,6 @@ class Meetups(Resource):
 api.add_resource(Meetups, "/meetups")
 
 
-class Pets(Resource):
-    def get(self):
-        pets = [pet.to_dict() for pet in Pet.query.all()]
-        return make_response(pets, 200)
-
-
-api.add_resource(Pets, "/pets")
-
-
-class Users(Resource):
-    def get(self):
-        users = [user.to_dict() for user in User.query.all()]
-        return make_response(users, 200)
-
-
-api.add_resource(Users, "/users")
-
-
-    
-    def get(self):
-        meetups = [meetup.to_dict() for meetup in Meetup.query.all()]
-
-        return make_response(meetups, 200)
-    
-api.add_resource(Meetups, '/meetups')
-
-
 class MeetupsById(Resource):
     def get(self, id):
         meetup = Meetup.query.filter(Meetup.id == id).first()
