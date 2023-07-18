@@ -19,6 +19,7 @@ class Pet(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    
     name = db.Column(db.String)
     birth_year = db.Column(db.Integer)
     species = db.Column(db.String)
@@ -27,7 +28,7 @@ class Pet(db.Model, SerializerMixin):
     city = db.Column(db.String)
     state = db.Column(db.String)
     country = db.Column(db.String)
-    availability = db.Column(db.string)
+    availability = db.Column(db.String)
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
 
