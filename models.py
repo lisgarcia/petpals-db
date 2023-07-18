@@ -15,7 +15,23 @@ bcrypt = Bcrypt()
 class Pet(db.Model, SerializerMixin):
     __tablename__ = "pets"
 
+    serialize_rules = ("-meetups.pet",)
+
     id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    name = db.Column(db.String)
+    birth_year = db.Column(db.Integer)
+    species = db.Column(db.String)
+    breed = db.Column(db.String)
+    profile_pic = db.Column(db.String)
+    city = db.Column(db.String)
+    state = db.Column(db.String)
+    country = db.Column(db.String)
+    availability = db.Column(db.string)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+
+    meetups = db.relationship("Meetup", backref="pet")
 
 
 class User(db.Model, SerializerMixin):
@@ -60,7 +76,7 @@ class Meetup(db.Model, SerializerMixin):
     state = db.Column(db.String)
     country = db.Column(db.String)
 
-    longtitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
 
 
