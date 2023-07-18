@@ -18,7 +18,7 @@ class Pet(db.Model, SerializerMixin):
     serialize_rules = ("-user.pet", "-user.pets", "-user.meetups")
 
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     name = db.Column(db.String)
     birth_year = db.Column(db.Integer)
@@ -29,8 +29,6 @@ class Pet(db.Model, SerializerMixin):
     state = db.Column(db.String)
     country = db.Column(db.String)
     availability = db.Column(db.String)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
 
     meetups = db.relationship("Meetup", backref="pet")
 
