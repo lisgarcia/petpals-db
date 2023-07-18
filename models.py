@@ -38,7 +38,7 @@ class Pet(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
-    serialize_rules = ("-meetups.user", "-_password_hash")
+    serialize_rules = ("-meetups.user", "-_password_hash", "-pets.user")
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -47,6 +47,8 @@ class User(db.Model, SerializerMixin):
     profile_pic = db.Column(db.String)
 
     meetups = db.relationship("Meetup", backref="user")
+
+    pets = db.relationship("Pet", backref="user")
 
     @hybrid_property
     def password_hash(self):
