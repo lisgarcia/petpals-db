@@ -74,6 +74,8 @@ class User(db.Model, SerializerMixin):
 class Meetup(db.Model, SerializerMixin):
     __tablename__ = "meetups"
 
+    serialize_rules = ("-user.meetups", "-pet.meetups")
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     pet_id = db.Column(db.Integer, db.ForeignKey("pets.id"))

@@ -151,8 +151,8 @@ class Meetups(Resource):
         )
         db.session.add(meetup)
         db.session.commit()
-        return make_response({"message": "Meetup created successfully."}, 201)
 
+        return make_response({"message": "Meetup created successfully."}, 201)
 
 api.add_resource(Meetups, "/meetups")
 
@@ -174,7 +174,141 @@ class Users(Resource):
 
 api.add_resource(Users, "/users")
 
+
+    
+    def get(self):
+        meetups = [meetup.to_dict() for meetup in Meetup.query.all()]
+
+        return make_response(meetups, 200)
+    
+api.add_resource(Meetups, '/meetups')
+
+
+class MeetupsById(Resource):
+    def get(self, id):
+        meetup = Meetup.query.filter(Meetup.id == id).first()
+
+        if meetup:
+            return make_response(meetup.to_dict(), 200)
+        else:
+            return make_response({'error':'Meetup not found'}, 404)
+
+    def delete(self, id):
+        meetup = Meetup.query.filter(Meetup.id == id).first()
+
+        if meetup:
+            db.session.delete(meetup)
+            db.session.commit()
+            
+            return make_response({}, 204)
+        
+        else:
+            return make_response({'error':'Meetup not found'}, 404)
+        
+    def patch(self, id):
+        meetup = Meetup.query.filter(Meetup.id == id).first()
+
+        if meetup:
+            data = request.get_json()
+            setattr(meetup, 'venue', data['venue'])
+            setattr(meetup, 'street_address', data['street_address'])
+            setattr(meetup, 'city', data['city'])
+            setattr(meetup, 'state', data['state'])
+            setattr(meetup, 'country', data['country'])
+            setattr(meetup, 'date', data['date'])
+            setattr(meetup, 'time', data['time'])
+
+            db.session.add(meetup)
+            db.session.commit()
+
+            return make_response(meetup.to_dict(), 202)
+        
+        else:
+            return make_response({'error': 'Meetup not found'}, 404)
+
+api.add_resource(MeetupsById, '/meetups/<int:id>')
+
+
+class Pets(Resource):
+    
+    def get(self):
+        pets = [pet.to_dict(rules=("-meetups",)) for pet in Pet.query.all()]
+
+        return make_response(pets, 200)
+    
+    def post(self):
+        request_json = request.get_json()
+
+        pet = Pet(
+            owner_id=session["owner_id"],
+            name=request_json["name"],
+            birth_year=request_json["birth_year"],
+            species=request_json["species"],
+            breed=request_json["breed"],
+            profile_pic=request_json["profile_pic"],
+            city=request_json["city"],
+            state=request_json["state"],
+            country=request_json["country"],
+            availability=request_json["availability"],
+        )
+        db.session.add(pet)
+        db.session.commit()
+        return make_response(
+            pet.to_dict(rules=("-meetups",)),
+            201
+        )
+    
+api.add_resource(Pets, "/pets")
+
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+
+        return make_response(users, 200)
+
+api.add_resource(Users, '/users')
+
+class UserById(Resource):
+    def get(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            return make_response(user.to_dict(), 200)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+    
+    def delete(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+
+            return make_response({}, 204)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+        
+    def patch(self, id):
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+            data = request.get_json()
+            setattr(user, 'username', data['username'])
+            #setattr(user, '_password_hash', data['_password_hash'])
+            setattr(user, 'profile_pic', data['profile_pic'])
+            setattr(user, 'email', data['email'])
+            
+
+            db.session.add(user)
+            db.session.commit()
+
+            return make_response(user.to_dict(), 202)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+
+api.add_resource(UserById, '/users/<int:id>')
+
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
 
-# test
