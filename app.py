@@ -309,10 +309,10 @@ class UserById(Resource):
 
         if user:
             data = request.get_json()
-            setattr(user, "username", data["username"])
-            # setattr(user, '_password_hash', data['_password_hash'])
-            setattr(user, "profile_pic", data["profile_pic"])
-            setattr(user, "email", data["email"])
+            for key in data:
+                if key == "password":
+                    user.password_hash = data[key]
+                setattr(user, key, data[key])
 
             db.session.add(user)
             db.session.commit()
@@ -320,7 +320,6 @@ class UserById(Resource):
             return make_response(user.to_dict(), 202)
         else:
             return make_response({"error": "User not found"}, 404)
-
 
 api.add_resource(UserById, "/users/<int:id>")
 
