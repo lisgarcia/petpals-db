@@ -2,7 +2,7 @@ from flask import Flask, make_response, request, session
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
-from models import db, Pet, User, Meetup
+from models import db, Pet, User, Meetup, MeetupAttendee
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 from geopy.geocoders import Nominatim
@@ -160,6 +160,7 @@ class Meetups(Resource):
 
 api.add_resource(Meetups, "/meetups")
 
+
 class MeetupsById(Resource):
     def get(self, id):
         meetup = Meetup.query.filter(Meetup.id == id).first()
@@ -216,7 +217,7 @@ class Pets(Resource):
         request_json = request.get_json()
 
         pet = Pet(
-            user_id=session["user_id"],
+            owner_id=session["owner_id"],
             name=request_json["name"],
             birth_year=request_json["birth_year"],
             species=request_json["species"],
@@ -234,6 +235,7 @@ class Pets(Resource):
 
 api.add_resource(Pets, "/pets")
 
+
 class PetById(Resource):
     def get(self, id):
         pet = Pet.query.filter(Pet.id == id).first()
@@ -241,14 +243,14 @@ class PetById(Resource):
         if pet:
             return make_response(pet.to_dict(), 200)
         else:
-            return make_response({'error': 'Pet not found'}, 404)
-        
+            return make_response({"error": "Pet not found"}, 404)
+
     def patch(self, id):
         pet = Pet.query.filter(Pet.id == id).first()
 
         if pet:
             request_json = request.get_json()
-            
+
             for key in request_json:
                 setattr(pet, key, request_json[key])
 
@@ -257,8 +259,8 @@ class PetById(Resource):
 
             return make_response(pet.to_dict(), 202)
         else:
-            return make_response({'error': 'Pet not found'}, 404)
-    
+            return make_response({"error": "Pet not found"}, 404)
+
     def delete(self, id):
         pet = Pet.query.filter(Pet.id == id).first()
 
@@ -268,10 +270,10 @@ class PetById(Resource):
 
             return make_response({}, 204)
         else:
-            return make_response({'error': 'Pet not found'}, 404)
+            return make_response({"error": "Pet not found"}, 404)
 
-api.add_resource(PetById, '/pets/<int:id>')
 
+api.add_resource(PetById, "/pets/<int:id>")
 
 
 class Users(Resource):
@@ -321,8 +323,26 @@ class UserById(Resource):
         else:
             return make_response({"error": "User not found"}, 404)
 
+
 api.add_resource(UserById, "/users/<int:id>")
 
+
+class MeetupAttendees(Resource):
+    def get(self):
+        meetup_attendees = [ma.to_dict() for ma in MeetupAttendee.query.all()]
+        return meetup_attendees, 200
+
+    def post(self):
+        request_json = request.get_json()
+        new_ma = MeetupAttendee(
+            meetup_id=request_json["meetup_id"], attendee_id=request_json["attendee_id"]
+        )
+        db.session.add(new_ma)
+        db.session.commit()
+        return make_response({"message": "successful"}, 201)
+
+
+api.add_resource(MeetupAttendees, "/meetup-attendees")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
