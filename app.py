@@ -213,7 +213,9 @@ class Pets(Resource):
         return make_response(pets, 200)
 
     def post(self):
+        print("reached")
         request_json = request.get_json()
+        print(request_json["species"])
 
         pet = Pet(
             user_id=session["user_id"],
