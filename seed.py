@@ -200,5 +200,5 @@ if __name__ == "__main__":
         ]
 
         db.session.add_all(meetups)
-
         db.session.commit()
+
