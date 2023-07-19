@@ -15,7 +15,13 @@ bcrypt = Bcrypt()
 class Pet(db.Model, SerializerMixin):
     __tablename__ = "pets"
 
-    serialize_rules = ("-user.pet", "-user.pets", "-user.meetups")
+    serialize_rules = (
+        "-user.pet",
+        "-user.pets",
+        "-user.meetups",
+        "-meetups.pet",
+        "-meetups_attending",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -29,6 +35,8 @@ class Pet(db.Model, SerializerMixin):
     state = db.Column(db.String)
     country = db.Column(db.String)
     availability = db.Column(db.String)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
 
     meetups = db.relationship("Meetup", backref="pet")
 
@@ -41,6 +49,9 @@ class User(db.Model, SerializerMixin):
         "-_password_hash",
         "-pets.user",
         "-pets.meetups",
+        "-meetups_attending",
+        "-meetups.pet",
+        "-meetups.attendees",
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -49,9 +60,9 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String)
     profile_pic = db.Column(db.String)
 
-    meetups = db.relationship("Meetup", backref="user")
+    meetups = db.relationship("Meetup", backref="user", cascade="all, delete-orphan")
 
-    pets = db.relationship("Pet", backref="user")
+    pets = db.relationship("Pet", backref="user", cascade="all, delete-orphan")
 
     @hybrid_property
     def password_hash(self):
@@ -66,13 +77,37 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
 
     def __repr__(self):
-        return f"<User {self.username}>"  
+        return f"<User {self.username}>"
+
+
+class MeetupAttendee(db.Model, SerializerMixin):
+    __tablename__ = "meetup_attendees"
+    meetup_id = db.Column(
+        "meetup_id", db.Integer, db.ForeignKey("meetups.id"), primary_key=True
+    )
+    attendee_id = db.Column(
+        "pet_id", db.Integer, db.ForeignKey("pets.id"), primary_key=True
+    )
 
 
 class Meetup(db.Model, SerializerMixin):
     __tablename__ = "meetups"
 
-    serialize_rules = ("-user.meetups", "-pet.meetups")
+    serialize_rules = (
+        "-user.meetups",
+        "-pet.meetups",
+        "-pet.attendees",
+        "-user.pets",
+        "-attendees.meetups_attending",
+        "-user.meetups_attending",
+        "-pet.meetups_attending",
+        "-pet.user",
+        "-attendees.pet",
+        "-attendees.user",
+        "-meetup_attendees.meetup_id",
+        "-meetup_attendees.attendee_id",
+        "-pet.user",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -94,3 +129,7 @@ class Meetup(db.Model, SerializerMixin):
     time = db.Column(db.String)
 
     image = db.Column(db.String)
+
+    # attendees = db.relationship(
+    #     "Pet", secondary=MeetupAttendee.__tablename__, backref="meetups_attending"
+    # )
