@@ -6,10 +6,11 @@ from models import db, Pet, User, Meetup, MeetupAttendee
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 from geopy.geocoders import Nominatim
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 CORS(app)
-
+mail = Mail(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///petpals.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -17,6 +18,12 @@ app.json.compact = False  # configures JSON responses to print on indented lines
 app.secret_key = (
     b"\xda\xac|D\xb4\xed\t\xffK\xd1\xbe\x1dg\xf4\x16\xc1j\xb3\x95N+\xf8x\x9e"
 )
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USERNAME"] = "petpalstesteracc@gmail.com"
+app.config["MAIL_PASSWORD"] = "bkswclemfkosgrjh"
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
 
 geolocator = Nominatim(user_agent="petpals")
 
@@ -345,6 +352,31 @@ class MeetupAttendees(Resource):
 
 
 api.add_resource(MeetupAttendees, "/meetup-attendees")
+
+
+class MailService(Resource):
+    def post(self):
+        data = request.get_json()
+
+        username = data.get("username")
+        recipient_email = data.get("recipient_email")
+        sender_email = data.get("sender_email")
+        message = data.get("message")
+
+        msg = Message(
+            subject=f"PetPals Message from {username}",
+            sender="petpalstesteracc@gmail.com",
+            recipients=[recipient_email],
+            body=f"{message}\n" + f"Email me at: {sender_email}",
+        )
+
+        mail.send(msg)
+
+        return "Sent"
+
+
+api.add_resource(MailService, "/send")
+
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
