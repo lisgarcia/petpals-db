@@ -13,7 +13,7 @@ distlib==0.3.6
 exceptiongroup==1.1.1
 executing==1.2.0
 filelock==3.9.0
-Flask~=2.1
+Flask==2.3.2
 Flask-Bcrypt==1.0.1
 Flask-Cors==4.0.0
 Flask-Mail==0.9.1
@@ -22,10 +22,11 @@ Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.0.5
 geographiclib==2.0
 geopy==2.3.0
+gunicorn==21.2.0
 idna==3.4
 iniconfig==2.0.0
 ipdb==0.13.13
-ipython
+ipython==8.14.0
 itsdangerous==2.1.2
 jedi==0.18.2
 Jinja2==3.1.2
@@ -37,7 +38,6 @@ parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
 pipenv==2023.2.4
-pip==23.2
 platformdirs==2.6.2
 pluggy==1.0.0
 prompt-toolkit==3.0.38
@@ -58,4 +58,4 @@ urllib3==1.26.14
 virtualenv==20.17.1
 virtualenv-clone==0.5.7
 wcwidth==0.2.6
-Werkzeug
+Werkzeug==2.3.6
