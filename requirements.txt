@@ -13,7 +13,7 @@ distlib==0.3.6
 exceptiongroup==1.1.1
 executing==1.2.0
 filelock==3.9.0
-Flask==2.3.2
+Flask~=2.1
 Flask-Bcrypt==1.0.1
 Flask-Cors==4.0.0
 Flask-Mail==0.9.1
@@ -37,6 +37,7 @@ parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
 pipenv==2023.2.4
+pip==23.2
 platformdirs==2.6.2
 pluggy==1.0.0
 prompt-toolkit==3.0.38
