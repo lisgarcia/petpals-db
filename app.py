@@ -229,7 +229,7 @@ class Pets(Resource):
         print(request_json["species"])
 
         pet = Pet(
-            owner_id=session["owner_id"],
+            user_id=session["user_id"],
             name=request_json["name"],
             birth_year=request_json["birth_year"],
             species=request_json["species"],
