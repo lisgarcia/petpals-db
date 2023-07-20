@@ -10,7 +10,7 @@ from flask_mail import Mail, Message
 
 app = Flask(__name__)
 CORS(app)
-mail = Mail(app)
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///petpals.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -21,9 +21,12 @@ app.secret_key = (
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USERNAME"] = "petpalstesteracc@gmail.com"
-app.config["MAIL_PASSWORD"] = "bkswclemfkosgrjh"
+app.config["MAIL_PASSWORD"] = "bglwnqdqskvdvsky"
 app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_DEFAULT_SENDER"] = "petpalstesteracc@gmail.com"
+
+mail = Mail(app)
 
 geolocator = Nominatim(user_agent="petpals")
 
@@ -365,7 +368,6 @@ class MailService(Resource):
 
         msg = Message(
             subject=f"PetPals Message from {username}",
-            sender="petpalstesteracc@gmail.com",
             recipients=[recipient_email],
             body=f"{message}\n" + f"Email me at: {sender_email}",
         )
