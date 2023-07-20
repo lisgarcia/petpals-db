@@ -7,13 +7,14 @@ from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 from geopy.geocoders import Nominatim
 from flask_mail import Mail, Message
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///petpals.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.json.compact = False  # configures JSON responses to print on indented lines
 app.secret_key = (
     b"\xda\xac|D\xb4\xed\t\xffK\xd1\xbe\x1dg\xf4\x16\xc1j\xb3\x95N+\xf8x\x9e"
