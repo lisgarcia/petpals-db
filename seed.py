@@ -11,9 +11,9 @@ if __name__ == "__main__":
         Meetup.query.delete()
 
         user = User(
-            username = "JessicaLee",
-            email = "jessicalee@gmail.com",
-            profile_pic = "https://i.pinimg.com/236x/ce/d8/4a/ced84a67302c60bd1abaaf9314064433.jpg",
+            username="JessicaLee",
+            email="jessicalee@gmail.com",
+            profile_pic="https://i.pinimg.com/236x/ce/d8/4a/ced84a67302c60bd1abaaf9314064433.jpg",
         )
 
         user.password_hash = "123"
@@ -21,106 +21,106 @@ if __name__ == "__main__":
         db.session.add(user)
 
         user = User(
-                username = "SteveLawrence",
-                email = "stevelawrence@gmail.com",
-                profile_pic = "https://m.media-amazon.com/images/M/MV5BZjVkYjllNGYtMDYwMi00MjhhLTk1MjMtZGM3OTcxMGNmNzlkXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg"
-            )
-        
+            username="SteveLawrence",
+            email="stevelawrence@gmail.com",
+            profile_pic="https://m.media-amazon.com/images/M/MV5BZjVkYjllNGYtMDYwMi00MjhhLTk1MjMtZGM3OTcxMGNmNzlkXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg",
+        )
+
         user.password_hash = "123"
 
         db.session.add(user)
 
         user = User(
-                username = "BrandiWright",
-                email = "brandiwright@gmail.com",
-                profile_pic = "https://kristinepaulsenphotography.com/images/Headshots_005.jpg"
-            )
-        
+            username="BrandiWright",
+            email="brandiwright@gmail.com",
+            profile_pic="https://kristinepaulsenphotography.com/images/Headshots_005.jpg",
+        )
+
         user.password_hash = "123"
 
         db.session.add(user)
 
         user = User(
-                username = "RobHoward",
-                email = "robhoward@gmail.com",
-                profile_pic = "https://static1.squarespace.com/static/5aa5d49e297114f4397667c5/t/61bcf1718eb2f01b1954b53f/1639772530153/Bo+Chen.jpg"
-            )
-        
+            username="RobHoward",
+            email="robhoward@gmail.com",
+            profile_pic="https://static1.squarespace.com/static/5aa5d49e297114f4397667c5/t/61bcf1718eb2f01b1954b53f/1639772530153/Bo+Chen.jpg",
+        )
+
         user.password_hash = "123"
 
         db.session.add(user)
 
         user = User(
-                username = "AshleyJimenez",
-                _password_hash = "123",
-                email = "ashleyjimenez@gmail.com",
-                profile_pic = "https://random42.com/wp-content/uploads/2019/11/Random42_Shobitha_Logendran-1.jpg"
-            )
-        
+            username="AshleyJimenez",
+            _password_hash="123",
+            email="ashleyjimenez@gmail.com",
+            profile_pic="https://random42.com/wp-content/uploads/2019/11/Random42_Shobitha_Logendran-1.jpg",
+        )
+
         user.password_hash = "123"
 
         db.session.add(user)
 
         pets = [
             Pet(
-            user_id=1,
-            name="Ben",
-            birth_year="2020",
-            species="dog",
-            breed="Husky",
-            profile_pic="https://images.wagwalkingweb.com/media/daily_wag/blog_articles/hero/1685787498.877709/fun-facts-about-siberian-huskies-1.png",
-            city="Chantilly",
-            state="Virginia",
-            country="United States",
-            availability="Weekends",
+                user_id=1,
+                name="Ben",
+                birth_year="2020",
+                species="dog",
+                breed="Husky",
+                profile_pic="https://images.wagwalkingweb.com/media/daily_wag/blog_articles/hero/1685787498.877709/fun-facts-about-siberian-huskies-1.png",
+                city="Chantilly",
+                state="Virginia",
+                country="United States",
+                availability="Weekends",
             ),
             Pet(
-            user_id=2,
-            name="Sparky",
-            birth_year="2016",
-            species="dog",
-            breed="Golden Retriever",
-            profile_pic="https://www.dailydogtag.com/wp-content/uploads/2018/06/Alice-G-Patterson-Photography-life-of-a-boat-dog-0050.jpg",
-            city="Dayton",
-            state="Ohio",
-            country="United States",
-            availability="Mondays at 6pm",
+                user_id=2,
+                name="Sparky",
+                birth_year="2016",
+                species="dog",
+                breed="Golden Retriever",
+                profile_pic="https://www.dailydogtag.com/wp-content/uploads/2018/06/Alice-G-Patterson-Photography-life-of-a-boat-dog-0050.jpg",
+                city="Dayton",
+                state="Ohio",
+                country="United States",
+                availability="Mondays at 6pm",
             ),
             Pet(
-            user_id=3,
-            name="Coconut",
-            birth_year="2022",
-            species="dog",
-            breed="Maltipoo",
-            profile_pic="https://petlandbradenton.com/wp-content/uploads/2023/03/2383872_800-600x450.jpg",
-            city="Austin",
-            state="Texas",
-            country="United States",
-            availability="Everyday at 12pm",
+                user_id=3,
+                name="Coconut",
+                birth_year="2022",
+                species="dog",
+                breed="Maltipoo",
+                profile_pic="https://petlandbradenton.com/wp-content/uploads/2023/03/2383872_800-600x450.jpg",
+                city="Austin",
+                state="Texas",
+                country="United States",
+                availability="Everyday at 12pm",
             ),
             Pet(
-            user_id=4,
-            name="Mitsy",
-            birth_year="2018",
-            species="cat",
-            breed="Maine Coon",
-            profile_pic="https://image.petmd.com/files/styles/863x625/public/2023-04/Maine-coon-cat.jpg",
-            city="Portland",
-            state="Maine",
-            country="United States",
-            availability="Saturday and Sunday from 3-7pm",
+                user_id=4,
+                name="Mitsy",
+                birth_year="2018",
+                species="cat",
+                breed="Maine Coon",
+                profile_pic="https://image.petmd.com/files/styles/863x625/public/2023-04/Maine-coon-cat.jpg",
+                city="Portland",
+                state="Maine",
+                country="United States",
+                availability="Saturday and Sunday from 3-7pm",
             ),
             Pet(
-            user_id=5,
-            name="Toothless",
-            birth_year="2021",
-            species="cat",
-            breed="Siamese",
-            profile_pic="https://www.dutch.com/cdn/shop/articles/shutterstock_1727177056.jpg?v=1678295146",
-            city="Orlando",
-            state="Florida",
-            country="United States",
-            availability="Weekdays after 5:30pm",
+                user_id=5,
+                name="Toothless",
+                birth_year="2021",
+                species="cat",
+                breed="Siamese",
+                profile_pic="https://www.dutch.com/cdn/shop/articles/shutterstock_1727177056.jpg?v=1678295146",
+                city="Orlando",
+                state="Florida",
+                country="United States",
+                availability="Weekdays after 5:30pm",
             ),
         ]
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
                 city="Chantilly",
                 state="Virginia",
                 country="United States",
-                date="07/21/2023",
+                date="2023-07-21",
                 time="2pm",
                 image="https://thedogvine.com/wp-content/uploads/2015/03/North-London-Dog-Meetup.jpeg",
             ),
@@ -151,7 +151,7 @@ if __name__ == "__main__":
                 city="Dayton",
                 state="Ohio",
                 country="United States",
-                date="07/22/2023",
+                date="2023-07-22",
                 time="10am",
                 image="https://media1.fdncms.com/styleweekly/imager/u/mobilestory/8970389/canine_adv2_ash.jpg",
             ),
@@ -165,7 +165,7 @@ if __name__ == "__main__":
                 city="Austin",
                 state="Texas",
                 country="United States",
-                date="07/23/2023",
+                date="2023-07-23",
                 time="1pm",
                 image="https://img.atlasobscura.com/RoNp9pPGu7xVvK2uk6L9O_fU5K6M748T2Wx54NVnSSM/rt:fit/h:390/q:81/sm:1/scp:1/ar:1/aHR0cHM6Ly9hdGxh/cy1kZXYuczMuYW1h/em9uYXdzLmNvbS91/cGxvYWRzL3BsYWNl/X2ltYWdlcy9iOWU1/MzhmYTRjN2I3Y2M0/OTdfYXVzdGluLXRl/eGFzLTIwMDB4MjAw/MC0yMTY4ZWIzNGEw/NjExNjAyNmZjZGRh/NzE5NWEwYzg5ZWNl/MGZhYjk5LmpwZw.jpg",
             ),
@@ -179,7 +179,7 @@ if __name__ == "__main__":
                 city="Portland",
                 state="Maine",
                 country="United States",
-                date="07/24/2023",
+                date="2023-07-24",
                 time="5pm",
                 image="https://lh3.googleusercontent.com/p/AF1QipO5HZZ6Q4iZGuNjZ8eGTxATSv-8Z_6qXPIyucoa=s1360-w1360-h1020",
             ),
@@ -193,12 +193,11 @@ if __name__ == "__main__":
                 city="Orlando",
                 state="Florida",
                 country="United States",
-                date="07/25/2023",
+                date="2023-07-25",
                 time="8pm",
                 image="https://i.imgur.com/yCmb2yI.jpg",
-            )
+            ),
         ]
 
         db.session.add_all(meetups)
         db.session.commit()
-
