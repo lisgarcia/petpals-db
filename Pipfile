@@ -15,6 +15,7 @@ sqlalchemy-serializer = "*"
 flask-restful = "*"
 flask-cors = "*"
 flask-bcrypt = "1.0.1"
+Flask-Mail = "*"
 
 [dev-packages]
 
