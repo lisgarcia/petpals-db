@@ -38,7 +38,7 @@ class Pet(db.Model, SerializerMixin):
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
 
-    meetups = db.relationship("Meetup", backref="pet")
+    meetups = db.relationship("Meetup", backref="pet", cascade="all, delete-orphan")
 
 
 class User(db.Model, SerializerMixin):
