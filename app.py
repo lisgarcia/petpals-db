@@ -278,18 +278,17 @@ class PetById(Resource):
         pet = Pet.query.filter(Pet.id == id).first()
 
         if pet:
-            db.session.delete(pet)
+            meetup_attendees = MeetupAttendee.query.filter(
+                MeetupAttendee.attendee_id == id
+            ).all()
+            for meetup_attendee in meetup_attendees:
+                db.session.delete(meetup_attendee)
 
             meetups = Meetup.query.filter(Meetup.pet_id == id).all()
             for meetup in meetups:
-                meetup_attendees = MeetupAttendee.query.filter(
-                    MeetupAttendee.meetup_id == meetup.id
-                ).all()
-                for meetup_attendee in meetup_attendees:
-                    db.session.delete(meetup_attendee)
-
                 db.session.delete(meetup)
 
+            db.session.delete(pet)
             db.session.commit()
 
             return make_response({}, 204)

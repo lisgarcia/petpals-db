@@ -83,7 +83,10 @@ class User(db.Model, SerializerMixin):
 class MeetupAttendee(db.Model, SerializerMixin):
     __tablename__ = "meetup_attendees"
     meetup_id = db.Column(
-        "meetup_id", db.Integer, db.ForeignKey("meetups.id"), primary_key=True
+        "meetup_id",
+        db.Integer,
+        db.ForeignKey("meetups.id", ondelete="CASCADE"),
+        primary_key=True,
     )
     attendee_id = db.Column(
         "pet_id", db.Integer, db.ForeignKey("pets.id"), primary_key=True
