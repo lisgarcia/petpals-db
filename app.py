@@ -332,7 +332,7 @@ class UserById(Resource):
             db.session.add(user)
             db.session.commit()
 
-            return make_response(user.to_dict(), 202)
+            return make_response({"message": "successful"}, 202)
         else:
             return make_response({"error": "User not found"}, 404)
 
@@ -384,4 +384,4 @@ api.add_resource(MailService, "/send")
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
 
-#smallchange
+# smallchange
