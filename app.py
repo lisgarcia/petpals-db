@@ -280,13 +280,13 @@ class PetById(Resource):
         if pet:
             db.session.delete(pet)
 
-            meetups = Meetup.query.filter(Meetup.pet_id == id).first()
+            meetups = Meetup.query.filter(Meetup.pet_id == id).all()
             for meetup in meetups:
                 db.session.delete(meetup)
 
             meetup_attendees = MeetupAttendee.query.filter(
                 MeetupAttendee.attendee_id == id
-            ).first()
+            ).all()
 
             for meetup_attendee in meetup_attendees:
                 db.session.delete(meetup_attendee)
