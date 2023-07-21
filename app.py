@@ -185,6 +185,11 @@ class MeetupsById(Resource):
         meetup = Meetup.query.filter(Meetup.id == id).first()
 
         if meetup:
+            meetup_attendees = MeetupAttendee.query.filter(
+                MeetupAttendee.meetup_id == id
+            ).all()
+            for meetup_attendee in meetup_attendees:
+                db.session.delete(meetup_attendee)
             db.session.delete(meetup)
             db.session.commit()
 
