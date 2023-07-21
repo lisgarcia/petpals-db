@@ -324,15 +324,20 @@ class UserById(Resource):
 
         if user:
             data = request.get_json()
-            for key in data:
-                if key == "password":
-                    user.password_hash = data[key]
-                setattr(user, key, data[key])
+            try:
+                for key in data:
+                    if key == "password":
+                        user.password_hash = data[key]
+                    setattr(user, key, data[key])
 
-            db.session.add(user)
-            db.session.commit()
+                db.session.add(user)
+                db.session.commit()
 
-            return make_response({"message": "successful"}, 202)
+                return make_response({"message": "successful"}, 202)
+            except IntegrityError:
+                db.session.rollback()
+                return {"error": "Username already exists"}, 422
+
         else:
             return make_response({"error": "User not found"}, 404)
 
