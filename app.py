@@ -124,7 +124,7 @@ class Meetups(Resource):
 
     def post(self):
         request_json = request.get_json()
-
+        id = request_json["id"]
         street_address = request_json["street_address"]
         city = request_json["city"]
         state = request_json["state"]
@@ -148,6 +148,7 @@ class Meetups(Resource):
         # latitude = location.latitude
 
         meetup = Meetup(
+            id=id,
             user_id=session["user_id"],
             pet_id=request_json["pet_id"],
             venue=request_json["venue"],
