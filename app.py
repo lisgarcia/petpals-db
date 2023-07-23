@@ -204,13 +204,8 @@ class MeetupsById(Resource):
 
         if meetup:
             data = request.get_json()
-            setattr(meetup, "venue", data["venue"])
-            setattr(meetup, "street_address", data["street_address"])
-            setattr(meetup, "city", data["city"])
-            setattr(meetup, "state", data["state"])
-            setattr(meetup, "country", data["country"])
-            setattr(meetup, "date", data["date"])
-            setattr(meetup, "time", data["time"])
+            for key in data:
+                setattr(meetup, key, data[key])
 
             db.session.add(meetup)
             db.session.commit()
