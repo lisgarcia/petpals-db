@@ -10,7 +10,7 @@ from flask_mail import Mail, Message
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://phungmaiton.github.io/petpals"}})
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
